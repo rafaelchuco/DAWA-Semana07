@@ -117,6 +117,34 @@ main {
     color: var(--accent);
 }
 
+.password-field {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 8px;
+    top: 24px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+    z-index: 1;
+}
+
+.toggle-password:hover {
+    color: var(--accent);
+}
+
+.toggle-password i {
+    font-size: 20px;
+}
+
 .full-width {
     width: 100%;
 }

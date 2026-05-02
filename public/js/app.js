@@ -345,6 +345,19 @@ function initNavigation() {
     }
 }
 
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const button = event.target.closest('button');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        button.innerHTML = '<i class="material-icons">visibility_off</i>';
+    } else {
+        input.type = 'password';
+        button.innerHTML = '<i class="material-icons">visibility</i>';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     if (window.M) {
         M.AutoInit();
