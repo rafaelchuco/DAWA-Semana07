@@ -28,14 +28,15 @@ Incluye:
 15. [Vistas web y rutas](#vistas-web-y-rutas)
 16. [Manejo de autenticación en frontend](#manejo-de-autenticación-en-frontend)
 17. [Estados esperados por pantalla](#estados-esperados-por-pantalla)
-18. [Guía de pruebas rápidas](#guía-de-pruebas-rápidas)
-19. [Evidencias y capturas de pantalla](#evidencias-y-capturas-de-pantalla)
-20. [Troubleshooting](#troubleshooting)
-21. [Checklist de seguridad mínima](#checklist-de-seguridad-minima)
-22. [Guion de demo (5-8 minutos)](#guion-de-demo-5-8-minutos)
-23. [Despliegue básico (referencial)](#despliegue-basico-referencial)
-24. [FAQ rápido](#faq-rapido)
-25. [Mejoras sugeridas](#mejoras-sugeridas)
+18. [Colección Postman](#colección-postman)
+19. [Guía de pruebas rápidas](#guía-de-pruebas-rápidas)
+20. [Evidencias y capturas de pantalla](#evidencias-y-capturas-de-pantalla)
+21. [Troubleshooting](#troubleshooting)
+22. [Checklist de seguridad mínima](#checklist-de-seguridad-minima)
+23. [Guion de demo (5-8 minutos)](#guion-de-demo-5-8-minutos)
+24. [Despliegue básico (referencial)](#despliegue-basico-referencial)
+25. [FAQ rápido](#faq-rapido)
+26. [Mejoras sugeridas](#mejoras-sugeridas)
 
 ## Stack y funcionalidades
 
@@ -594,6 +595,42 @@ La app web guarda JWT en `sessionStorage` y:
 - Estado inicial: precarga datos de usuario.
 - Acción: actualizar datos y opcionalmente contraseña.
 - Estado de éxito: toast de actualización.
+
+## Colección Postman
+
+Archivo generado:
+
+- `docs/postman/DAWA-Semana07.postman_collection.json`
+
+Incluye requests para:
+
+- Health check
+- `signUp`
+- `signIn` admin y usuario
+- `GET /api/users` (admin)
+- `GET /api/users/me`
+- `PUT /api/users/me`
+- `GET /api/users/:id` (admin)
+
+Variables incluidas en la colección:
+
+- `baseUrl`
+- `adminEmail`, `adminPassword`
+- `newUserEmail`, `newUserPassword`
+- `adminToken`, `userToken`, `sampleUserId`
+
+Orden recomendado de ejecución:
+
+1. `POST /api/auth/signUp`
+2. `POST /api/auth/signIn (admin)`
+3. `POST /api/auth/signIn (new user)`
+4. `GET /api/users (admin)`
+5. Requests restantes de `Users`
+
+Notas:
+
+- Los tests de Postman guardan automáticamente `adminToken`, `userToken` y `sampleUserId`.
+- Si ya existe `newUserEmail`, cambia ese valor en variables antes de ejecutar `signUp`.
 
 ## Guía de pruebas rápidas
 
