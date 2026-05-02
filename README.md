@@ -15,17 +15,27 @@ Incluye:
 2. [Arquitectura general (mapa)](#arquitectura-general-mapa)
 3. [Secuencias de negocio](#secuencias-de-negocio)
 4. [Estructura del proyecto](#estructura-del-proyecto)
-5. [Requisitos](#requisitos)
-6. [Instalación y ejecución](#instalación-y-ejecución)
-7. [Variables de entorno](#variables-de-entorno)
-8. [Semillas iniciales (roles y admin)](#semillas-iniciales-roles-y-admin)
-9. [Modelo de datos](#modelo-de-datos)
-10. [API REST](#api-rest)
-11. [Vistas web y rutas](#vistas-web-y-rutas)
-12. [Manejo de autenticación en frontend](#manejo-de-autenticación-en-frontend)
-13. [Guía de pruebas rápidas](#guía-de-pruebas-rápidas)
-14. [Evidencias y capturas de pantalla](#evidencias-y-capturas-de-pantalla)
-15. [Mejoras sugeridas](#mejoras-sugeridas)
+5. [Mapa de rutas y seguridad](#mapa-de-rutas-y-seguridad)
+6. [Mapa de navegación frontend](#mapa-de-navegacion-frontend)
+7. [Diagrama de datos (ER simplificado)](#diagrama-de-datos-er-simplificado)
+8. [Requisitos](#requisitos)
+9. [Instalación y ejecución](#instalación-y-ejecución)
+10. [Variables de entorno](#variables-de-entorno)
+11. [Semillas iniciales (roles y admin)](#semillas-iniciales-roles-y-admin)
+12. [Modelo de datos](#modelo-de-datos)
+13. [API REST](#api-rest)
+14. [Ejemplos curl listos para probar](#ejemplos-curl-listos-para-probar)
+15. [Vistas web y rutas](#vistas-web-y-rutas)
+16. [Manejo de autenticación en frontend](#manejo-de-autenticación-en-frontend)
+17. [Estados esperados por pantalla](#estados-esperados-por-pantalla)
+18. [Guía de pruebas rápidas](#guía-de-pruebas-rápidas)
+19. [Evidencias y capturas de pantalla](#evidencias-y-capturas-de-pantalla)
+20. [Troubleshooting](#troubleshooting)
+21. [Checklist de seguridad mínima](#checklist-de-seguridad-minima)
+22. [Guion de demo (5-8 minutos)](#guion-de-demo-5-8-minutos)
+23. [Despliegue básico (referencial)](#despliegue-basico-referencial)
+24. [FAQ rápido](#faq-rapido)
+25. [Mejoras sugeridas](#mejoras-sugeridas)
 
 ## Stack y funcionalidades
 
@@ -168,6 +178,39 @@ sequenceDiagram
     end
 ```
 
+### 4) Actualizacion de perfil (`PUT /api/users/me`)
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant U as Usuario autenticado
+  participant FE as Frontend (profile)
+  participant API as Express API
+  participant Auth as authenticate
+  participant Role as authorize([])
+  participant UC as UserController
+  participant US as UserService
+  participant UR as UserRepository
+  participant DB as MongoDB
+
+  U->>FE: Edita y guarda formulario
+  FE->>API: PUT /api/users/me + Bearer token
+  API->>Auth: Verificar JWT
+  Auth-->>API: req.userId
+  API->>Role: authorize([])
+  Role-->>API: next()
+  API->>UC: updateMe(req.userId, body)
+  UC->>US: updateMe(id, payload)
+  US->>US: Validar email unico y password
+  US->>UR: updateById(id, updates)
+  UR->>DB: Update user
+  DB-->>UR: User actualizado
+  UR-->>US: User
+  US-->>UC: User mapeado
+  UC-->>FE: 200 OK
+  FE-->>U: Toast de exito
+```
+
 ## Estructura del proyecto
 
 ```text
@@ -187,6 +230,70 @@ sequenceDiagram
 │   └── server.js
 ├── package.json
 └── README.md
+```
+
+## Mapa de rutas y seguridad
+
+```mermaid
+flowchart TD
+    A[Peticion HTTP] --> B{Ruta API?}
+    B -->|No| C[Rutas EJS / SSR]
+    B -->|Si| D[Router Express]
+    D --> E{Protegida?}
+    E -->|No| F[Controller]
+    E -->|Si| G[authenticate]
+    G --> H{JWT valido?}
+    H -->|No| I[401]
+    H -->|Si| J[authorize]
+    J --> K{Rol permitido?}
+    K -->|No| L[403]
+    K -->|Si| F
+    F --> M[Service]
+    M --> N[Repository]
+    N --> O[(MongoDB)]
+```
+
+## Mapa de navegacion frontend
+
+```mermaid
+flowchart LR
+    A[/signIn/] -->|Login user| B[/dashboard/user/]
+    A -->|Login admin| C[/dashboard/admin/]
+    D[/signUp/] --> A
+    B --> E[/profile/]
+    C --> E
+    B --> F[/403/]
+    C --> F
+    A --> G[/404/]
+```
+
+## Diagrama de datos (ER simplificado)
+
+```mermaid
+erDiagram
+    ROLE ||--o{ USER : assigned_to
+
+    ROLE {
+      ObjectId _id
+      string name
+      date createdAt
+      date updatedAt
+    }
+
+    USER {
+      ObjectId _id
+      string email
+      string name
+      string lastName
+      string phoneNumber
+      date birthdate
+      string url_profile
+      string adress
+      string password
+      ObjectId[] roles
+      date createdAt
+      date updatedAt
+    }
 ```
 
 ## Requisitos
@@ -382,6 +489,57 @@ Body de ejemplo:
 - `403`: rol insuficiente
 - `404`: usuario no encontrado o ruta inexistente
 
+## Ejemplos `curl` listos para probar
+
+### 1) Registro
+
+```bash
+curl -X POST http://localhost:3000/api/auth/signUp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name":"Ana",
+    "lastName":"Perez",
+    "phoneNumber":"987654321",
+    "birthdate":"1999-05-12",
+    "email":"ana@example.com",
+    "password":"Ana#1234",
+    "url_profile":"",
+    "adress":"Lima",
+    "roles":["user"]
+  }'
+```
+
+### 2) Login
+
+```bash
+curl -X POST http://localhost:3000/api/auth/signIn \
+  -H "Content-Type: application/json" \
+  -d '{"email":"ana@example.com","password":"Ana#1234"}'
+```
+
+### 3) Listar usuarios (admin)
+
+```bash
+curl -X GET http://localhost:3000/api/users \
+  -H "Authorization: Bearer <TOKEN_ADMIN>"
+```
+
+### 4) Perfil propio
+
+```bash
+curl -X GET http://localhost:3000/api/users/me \
+  -H "Authorization: Bearer <TOKEN>"
+```
+
+### 5) Actualizar perfil
+
+```bash
+curl -X PUT http://localhost:3000/api/users/me \
+  -H "Authorization: Bearer <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{"adress":"Cusco","phoneNumber":"900111222"}'
+```
+
 ## Vistas web y rutas
 
 Rutas SSR disponibles:
@@ -404,6 +562,38 @@ La app web guarda JWT en `sessionStorage` y:
 - Adjunta `Authorization: Bearer <token>` en cada fetch protegido
 - Si recibe `401`, limpia sesión y vuelve a `/signIn`
 - Si recibe `403`, redirige a `/403`
+
+## Estados esperados por pantalla
+
+### `signIn`
+
+- Estado inicial: formulario vacío.
+- Estado de error: toast con credenciales inválidas.
+- Estado de éxito: guarda token y redirige por rol.
+
+### `signUp`
+
+- Estado inicial: formulario de alta.
+- Estado de error: validaciones de backend (email, password).
+- Estado de éxito: mensaje y redirección a `signIn`.
+
+### `dashboard/user`
+
+- Estado inicial: carga `/api/users/me`.
+- Estado de éxito: tarjeta con datos y roles.
+- Estado sin sesión/token vencido: redirección a `signIn`.
+
+### `dashboard/admin`
+
+- Estado inicial: carga lista `/api/users`.
+- Acción: abrir modal de detalle por usuario.
+- Estado sin rol admin: redirección a `403`.
+
+### `profile`
+
+- Estado inicial: precarga datos de usuario.
+- Acción: actualizar datos y opcionalmente contraseña.
+- Estado de éxito: toast de actualización.
 
 ## Guía de pruebas rápidas
 
@@ -446,6 +636,88 @@ Nombres sugeridos:
 - `08-error-403.png`
 - `09-error-404.png`
 - `10-api-signin-token.png`
+
+Evidencias extra recomendadas:
+
+- `11-api-users-admin.png` (GET `/api/users` con admin)
+- `12-api-users-me.png` (GET `/api/users/me`)
+- `13-api-users-me-update.png` (PUT `/api/users/me`)
+- `14-token-decoded.png` (payload JWT con roles)
+- `15-mongo-users-collection.png` (datos persistidos)
+
+## Troubleshooting
+
+### Mongo no conecta
+
+- Verifica que el servicio MongoDB esté levantado.
+- Revisa `MONGODB_URI` en `.env`.
+- Comprueba puertos y permisos locales.
+
+### Siempre devuelve 401
+
+- Revisa formato exacto del header `Authorization`.
+- Confirma que `JWT_SECRET` sea el mismo al firmar y verificar.
+- Verifica expiración del token (`exp`).
+
+### Siempre devuelve 403 en admin
+
+- Decodifica JWT y confirma que contenga `roles: ["admin", ...]`.
+- Inicia sesión con el usuario semilla admin.
+
+### Error de validación de contraseña
+
+- Debe cumplir regex: `^(?=.*[A-Z])(?=.*\d)(?=.*[#\$%&*@]).{8,}$`.
+
+## Checklist de seguridad minima
+
+- [x] Password hasheado con bcrypt
+- [x] JWT con expiración
+- [x] Middleware de autenticación
+- [x] Middleware de autorización por rol
+- [x] Bloqueo de edición de `roles` en `updateMe`
+- [ ] Rate limit
+- [ ] Helmet
+- [ ] Auditoría de intentos de login
+- [ ] Refresh tokens / revocación
+
+## Guion de demo (5-8 minutos)
+
+1. Mostrar arquitectura y diagrama de capas.
+2. Ejecutar app y explicar seed de admin.
+3. Registrar usuario nuevo.
+4. Iniciar sesión como user y mostrar dashboard/profile.
+5. Iniciar sesión como admin y listar usuarios.
+6. Mostrar llamada API protegida con token.
+7. Cerrar con puntos de seguridad y mejoras.
+
+## Despliegue basico (referencial)
+
+Para desplegar en un entorno cloud:
+
+1. Proveer MongoDB gestionado (Atlas u otro).
+2. Configurar variables de entorno seguras.
+3. Ejecutar en modo `npm start`.
+4. Configurar reverse proxy (Nginx) y HTTPS.
+5. Restringir CORS a dominios permitidos.
+
+Variables recomendadas adicionales:
+
+- `NODE_ENV=production`
+- `CORS_ORIGIN=https://tu-dominio.com` (si implementas CORS estricto)
+
+## FAQ rapido
+
+### Se pueden crear usuarios admin por API?
+
+Sí, actualmente `signUp` admite `roles` en payload. En producción conviene bloquear esta posibilidad o protegerla con un flujo administrativo autenticado.
+
+### Por que se usa `sessionStorage`?
+
+Es simple para laboratorio/demo. Para producción suele preferirse cookie `httpOnly` + `SameSite` + `Secure`.
+
+### Por que hay `adress` y no `address`?
+
+El proyecto lo maneja como `adress` en modelo, frontend y API. Mantener consistencia evita romper compatibilidad.
 
 ## Mejoras sugeridas
 
