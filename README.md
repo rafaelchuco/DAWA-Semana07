@@ -377,7 +377,7 @@ Al iniciar el servidor:
 
 - Si no hay roles, se crean `user` y `admin`.
 - Si no existe el admin, se crea:
-  - Email: `admin@example.com`
+  - Email: `admin@admin.com`
   - Password: `Admin#1234`
   - Roles: `user`, `admin`
 
@@ -677,7 +677,7 @@ Notas:
 3. Configura `.env`.
 4. Ejecuta `npm run dev`.
 5. Abre `http://localhost:3000/signIn`.
-6. Prueba con admin semilla: `admin@example.com` / `Admin#1234`.
+6. Prueba con admin semilla: `admin@admin.com` / `Admin#1234`.
 7. Verifica dashboard admin, perfil y listado de usuarios.
 
 ## Evidencias y capturas de pantalla
