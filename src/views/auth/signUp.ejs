@@ -1,0 +1,41 @@
+<%- include('../partials/head', { title }) %>
+<body class="auth-page" data-page="signup">
+    <%- include('../partials/navbar') %>
+    <main class="container auth-shell wide-shell">
+        <div class="row">
+            <div class="col s12 l4">
+                <div class="hero-card card-panel tall">
+                    <span class="eyebrow">Nuevo usuario</span>
+                    <h1>Crea tu cuenta</h1>
+                    <p>Regístrate para acceder al dashboard y a tu perfil.</p>
+                    <ul class="feature-list">
+                        <li><i class="material-icons">check</i> Acceso con JWT</li>
+                        <li><i class="material-icons">check</i> Roles user y admin</li>
+                        <li><i class="material-icons">check</i> Perfil editable</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col s12 l8">
+                <div class="card auth-card">
+                    <div class="card-content">
+                        <span class="card-title">Registro</span>
+                        <form id="signUpForm" class="auth-form grid-form">
+                            <div class="input-field"><input id="name" name="name" type="text" required><label for="name">Nombre</label></div>
+                            <div class="input-field"><input id="lastName" name="lastName" type="text" required><label for="lastName">Apellido</label></div>
+                            <div class="input-field"><input id="phoneNumber" name="phoneNumber" type="text" required><label for="phoneNumber">Teléfono</label></div>
+                            <div class="input-field"><input id="birthdate" name="birthdate" type="date" required><label for="birthdate">Fecha de nacimiento</label></div>
+                            <div class="input-field"><input id="email" name="email" type="email" required><label for="email">Email</label></div>
+                            <div class="input-field"><input id="password" name="password" type="password" required><label for="password">Password</label></div>
+                            <div class="input-field span-2"><input id="url_profile" name="url_profile" type="url"><label for="url_profile">Foto de perfil URL</label></div>
+                            <div class="input-field span-2"><input id="adress" name="adress" type="text"><label for="adress">Dirección</label></div>
+                            <div class="span-2">
+                                <button class="btn waves-effect waves-light full-width" type="submit">Crear cuenta</button>
+                            </div>
+                        </form>
+                        <p class="form-link">¿Ya tienes cuenta? <a href="/signIn">Inicia sesión</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <%- include('../partials/footer') %>

@@ -1,0 +1,36 @@
+<%- include('../partials/head', { title }) %>
+<body class="auth-page" data-page="signin">
+    <%- include('../partials/navbar') %>
+    <main class="container auth-shell">
+        <div class="row valign-wrapper auth-grid">
+            <div class="col s12 m6 l5">
+                <div class="hero-card card-panel">
+                    <span class="eyebrow">Acceso seguro</span>
+                    <h1>Bienvenido de nuevo</h1>
+                    <p>Ingresa con tu correo y contraseña para acceder a tu panel.</p>
+                </div>
+            </div>
+            <div class="col s12 m6 l5 offset-l1">
+                <div class="card auth-card">
+                    <div class="card-content">
+                        <span class="card-title">Iniciar sesión</span>
+                        <form id="signInForm" class="auth-form">
+                            <div class="input-field">
+                                <input id="email" name="email" type="email" required>
+                                <label for="email">Email</label>
+                            </div>
+                            <div class="input-field">
+                                <input id="password" name="password" type="password" required>
+                                <label for="password">Password</label>
+                            </div>
+                            <button class="btn waves-effect waves-light full-width" type="submit">
+                                Entrar
+                            </button>
+                        </form>
+                        <p class="form-link">¿No tienes cuenta? <a href="/signUp">Regístrate</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <%- include('../partials/footer') %>

@@ -1,0 +1,15 @@
+<%- include('../partials/head', { title }) %>
+<body data-page="dashboard-user" data-required-roles="user,admin">
+    <%- include('../partials/navbar') %>
+    <main class="container page-shell">
+        <div class="page-header">
+            <div>
+                <span class="eyebrow">Dashboard</span>
+                <h1>Bienvenido, aquí están tus datos</h1>
+            </div>
+            <a class="btn-flat logout-link" href="#" id="logoutBtn">Cerrar sesión</a>
+        </div>
+
+        <div id="userDashboard" class="row"></div>
+    </main>
+    <%- include('../partials/footer') %>

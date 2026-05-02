@@ -1,0 +1,247 @@
+:root {
+    --bg: #081120;
+    --panel: rgba(12, 22, 40, 0.88);
+    --panel-strong: #0f1b31;
+    --text: #f5f8ff;
+    --muted: #a8b3c9;
+    --accent: #56d6a7;
+    --accent-2: #7dd3fc;
+    --danger: #ff7c7c;
+}
+
+html, body {
+    min-height: 100%;
+    font-family: 'Inter', sans-serif;
+    background:
+        radial-gradient(circle at top left, rgba(86, 214, 167, 0.18), transparent 28%),
+        radial-gradient(circle at right top, rgba(125, 211, 252, 0.14), transparent 24%),
+        linear-gradient(160deg, #06101c 0%, #0b1630 60%, #081120 100%);
+    color: var(--text);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.site-header nav,
+.site-header .sidenav {
+    background: transparent;
+}
+
+.brand-logo {
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.auth-page .nav-wrapper,
+.page-shell .nav-wrapper {
+    min-height: 84px;
+}
+
+.auth-shell,
+.page-shell,
+.error-shell {
+    padding-top: 48px;
+    padding-bottom: 64px;
+}
+
+.auth-grid {
+    min-height: calc(100vh - 180px);
+}
+
+.hero-card,
+.auth-card,
+.admin-card,
+.profile-card,
+.error-card {
+    background: var(--panel);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    color: var(--text);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.hero-card {
+    padding: 2rem;
+}
+
+.hero-card.tall {
+    min-height: 100%;
+}
+
+.hero-card h1,
+.page-header h1,
+.error-card h1 {
+    margin: 0.25rem 0 0;
+    font-size: clamp(2rem, 3vw, 3.6rem);
+    font-weight: 800;
+}
+
+.eyebrow {
+    display: inline-block;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.auth-card .card-content,
+.admin-card .card-content,
+.profile-card .card-content {
+    padding: 2rem;
+}
+
+.auth-form .input-field input {
+    color: var(--text);
+    border-bottom-color: rgba(255, 255, 255, 0.22);
+}
+
+.auth-form .input-field input:focus {
+    border-bottom-color: var(--accent) !important;
+    box-shadow: 0 1px 0 0 var(--accent) !important;
+}
+
+.auth-form .input-field label {
+    color: var(--muted);
+}
+
+.auth-form .input-field input:focus + label,
+.auth-form .input-field input.valid + label {
+    color: var(--accent);
+}
+
+.full-width {
+    width: 100%;
+}
+
+.grid-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.25rem;
+}
+
+.grid-form .span-2 {
+    grid-column: span 2;
+}
+
+.form-link {
+    margin-top: 1rem;
+    color: var(--muted);
+}
+
+.form-link a,
+.logout-link,
+.error-actions a {
+    color: var(--accent-2);
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+    color: var(--muted);
+}
+
+.feature-list .material-icons {
+    color: var(--accent);
+    font-size: 1.1rem;
+}
+
+.page-header,
+.error-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table.highlight > tbody > tr:hover {
+    background: rgba(125, 211, 252, 0.08);
+}
+
+table,
+th,
+td {
+    color: var(--text);
+}
+
+.btn,
+.btn-large {
+    background: linear-gradient(135deg, var(--accent), #4c9bf5);
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+.btn:hover,
+.btn-large:hover {
+    background: linear-gradient(135deg, #6ce2b7, #65adff);
+}
+
+.error-page .error-shell {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+}
+
+.error-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2.5rem;
+    max-width: 640px;
+}
+
+.error-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.25rem;
+}
+
+.modal {
+    background: #0e1b33;
+    color: var(--text);
+    border-radius: 20px;
+}
+
+.modal .modal-footer {
+    background: transparent;
+}
+
+.chip {
+    background: rgba(86, 214, 167, 0.14);
+    color: var(--text);
+}
+
+@media (max-width: 992px) {
+    .grid-form {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-form .span-2 {
+        grid-column: span 1;
+    }
+
+    .page-header,
+    .error-card,
+    .auth-grid {
+        align-items: flex-start;
+    }
+}

@@ -1,0 +1,14 @@
+<%- include('../partials/head', { title }) %>
+<body class="error-page" data-page="error-403">
+    <main class="container error-shell">
+        <div class="error-card card-panel">
+            <span class="eyebrow">403</span>
+            <h1>Acceso denegado</h1>
+            <p>No tienes permisos suficientes para acceder a esta ruta.</p>
+            <div class="error-actions">
+                <a href="/signIn" class="btn">Ir a Sign In</a>
+                <a href="/dashboard/user" class="btn-flat">Dashboard</a>
+            </div>
+        </div>
+    </main>
+    <%- include('../partials/footer') %>

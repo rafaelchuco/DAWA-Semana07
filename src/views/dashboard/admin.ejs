@@ -1,0 +1,43 @@
+<%- include('../partials/head', { title }) %>
+<body data-page="dashboard-admin" data-required-roles="admin">
+    <%- include('../partials/navbar') %>
+    <main class="container page-shell">
+        <div class="page-header">
+            <div>
+                <span class="eyebrow">Administrador</span>
+                <h1>Usuarios registrados</h1>
+            </div>
+            <a class="btn-flat logout-link" href="#" id="logoutBtn">Cerrar sesión</a>
+        </div>
+
+        <div class="card admin-card">
+            <div class="card-content">
+                <div class="table-wrapper">
+                    <table class="highlight responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                                <th>Rol</th>
+                                <th>Registrado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="userDetailsModal" class="modal">
+            <div class="modal-content">
+                <h4>Detalle del usuario</h4>
+                <div id="userDetailsContent"></div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
+            </div>
+        </div>
+    </main>
+    <%- include('../partials/footer') %>
