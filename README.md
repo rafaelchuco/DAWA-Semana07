@@ -154,3 +154,15 @@ Authorization: Bearer <token>
 - `/404`: página no encontrada
 
 La navegación usa `sessionStorage` para guardar el JWT y redirigir según el rol del usuario.
+
+## Agente personalizado
+
+El workspace incluye un agente especializado en seguridad backend en [.github/agents/backend-security-architect.agent.md](.github/agents/backend-security-architect.agent.md). Úsalo para tareas de diseño, implementación y revisión de APIs seguras con Express, MongoDB, JWT, bcrypt y control de acceso por roles.
+
+## Flujo recomendado
+
+1. Inicia MongoDB local.
+2. Ejecuta `npm install`.
+3. Crea o ajusta el archivo `.env`.
+4. Levanta la app con `npm run dev`.
+5. Accede a `/signIn` y usa el usuario semilla `admin@example.com` con contraseña `Admin#1234` para probar el dashboard de administrador.
