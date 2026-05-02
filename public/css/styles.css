@@ -145,6 +145,48 @@ main {
     font-size: 20px;
 }
 
+.password-rules {
+    margin-block-start: -0.5rem;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.password-rules p {
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--muted);
+}
+
+.password-rules ul {
+    margin: 0.6rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.password-rules li {
+    position: relative;
+    padding-inline-start: 1.2rem;
+    margin-block-end: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.password-rules li::before {
+    content: '•';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+}
+
+.password-rules li.rule-pending {
+    color: var(--danger);
+}
+
+.password-rules li.rule-ok {
+    color: var(--accent);
+}
+
 .full-width {
     width: 100%;
 }

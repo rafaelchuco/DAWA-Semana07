@@ -25,7 +25,16 @@
                             <div class="input-field"><input id="phoneNumber" name="phoneNumber" type="text" required><label for="phoneNumber">Teléfono</label></div>
                             <div class="input-field"><input id="birthdate" name="birthdate" type="date" required><label for="birthdate">Fecha de nacimiento</label></div>
                             <div class="input-field"><input id="email" name="email" type="email" required><label for="email">Email</label></div>
-                            <div class="input-field password-field"><input id="password" name="password" type="password" required><label for="password">Password</label><button type="button" class="toggle-password" onclick="togglePassword('password')"><i class="material-icons">visibility</i></button></div>
+                            <div class="input-field password-field"><input id="password" name="password" type="password" minlength="8" required><label for="password">Password</label><button type="button" class="toggle-password" onclick="togglePassword('password')"><i class="material-icons">visibility</i></button></div>
+                            <div class="span-2 password-rules" id="passwordRules">
+                                <p>Tu contraseña debe incluir:</p>
+                                <ul>
+                                    <li data-rule="minLength">Mínimo 8 caracteres</li>
+                                    <li data-rule="uppercase">Al menos una letra mayúscula</li>
+                                    <li data-rule="number">Al menos un número</li>
+                                    <li data-rule="special">Al menos un caracter especial: # $ % & * @</li>
+                                </ul>
+                            </div>
                             <div class="input-field span-2"><input id="url_profile" name="url_profile" type="url"><label for="url_profile">Foto de perfil URL</label></div>
                             <div class="input-field span-2"><input id="adress" name="adress" type="text"><label for="adress">Dirección</label></div>
                             <div class="span-2">

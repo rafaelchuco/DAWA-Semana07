@@ -1,5 +1,39 @@
 const API_BASE = '/api';
 
+function evaluatePasswordRules(password) {
+    return {
+        minLength: password.length >= 8,
+        uppercase: /[A-Z]/.test(password),
+        number: /\d/.test(password),
+        special: /[#$%&*@]/.test(password)
+    };
+}
+
+function bindSignUpPasswordRules(signUpForm) {
+    const passwordInput = signUpForm.password;
+    const rulesContainer = document.getElementById('passwordRules');
+    if (!passwordInput || !rulesContainer) {
+        return () => true;
+    }
+
+    const ruleItems = rulesContainer.querySelectorAll('li[data-rule]');
+
+    const updateRules = () => {
+        const state = evaluatePasswordRules(passwordInput.value);
+        ruleItems.forEach((item) => {
+            const isOk = Boolean(state[item.dataset.rule]);
+            item.classList.toggle('rule-ok', isOk);
+            item.classList.toggle('rule-pending', !isOk);
+        });
+        return state;
+    };
+
+    passwordInput.addEventListener('input', updateRules);
+    updateRules();
+
+    return () => Object.values(updateRules()).every(Boolean);
+}
+
 function decodeToken(token) {
     try {
         const payload = token.split('.')[1];
@@ -274,8 +308,15 @@ function initAuthPage(body) {
     }
 
     if (signUpForm) {
+        const isPasswordValid = bindSignUpPasswordRules(signUpForm);
+
         signUpForm.addEventListener('submit', async (event) => {
             event.preventDefault();
+
+            if (!isPasswordValid()) {
+                toast('La contraseña no cumple las reglas requeridas', 'red darken-2');
+                return;
+            }
 
             const payload = {
                 name: signUpForm.name.value.trim(),
