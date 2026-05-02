@@ -3,7 +3,7 @@ import userRepository from '../repositories/UserRepository.js';
 import roleRepository from '../repositories/RoleRepository.js';
 
 export default async function seedUsers() {
-    const adminEmail = 'admin@example.com';
+    const adminEmail = 'admin@admin.com';
     const existingAdmin = await userRepository.findByEmail(adminEmail);
 
     if (existingAdmin) {
@@ -27,5 +27,5 @@ export default async function seedUsers() {
         roles: [userRole?._id, adminRole?._id].filter(Boolean)
     });
 
-    console.log('Seeded admin user: admin@example.com / Admin#1234');
+    console.log('Seeded admin user: admin@admin.com / Admin#1234');
 }
